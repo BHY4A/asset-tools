@@ -1,0 +1,188 @@
+{
+  "name": "Расчётные утилиты КНИТУ",
+  "hub": "../../bhy4a.github.io",
+  "apps": {
+    "sapr-labs": "../../sapr-labs",
+    "krrs-robot": "../../krrs-robot",
+    "op-coursework": "../../op-coursework",
+    "eco-pdv": "../../eco-pdv"
+  },
+  "size": [
+    1920,
+    1200
+  ],
+  "build": {
+    "cmd": [
+      "python3",
+      "tools/build_styles.py",
+      "styles/src",
+      "styles/styles.css"
+    ]
+  },
+  "version_files": [
+    "../../bhy4a.github.io/js/suite.js",
+    "../../bhy4a.github.io/index.html",
+    "../../sapr-labs/js/suite.js",
+    "../../sapr-labs/index.html",
+    "../../krrs-robot/js/suite.js",
+    "../../krrs-robot/index.html",
+    "../../op-coursework/js/suite.js",
+    "../../op-coursework/index.html",
+    "../../eco-pdv/js/suite.js",
+    "../../eco-pdv/index.html"
+  ],
+  "styles": {
+    "ether": {
+      "tool": "ether",
+      "name": "et-bg-{app}-{theme}.webp",
+      "hub": {
+        "app": "нет"
+      },
+      "base": {
+        "light": "#ffd9ec",
+        "dark": "#090322"
+      },
+      "themes": {
+        "light": {
+          "preset": "день"
+        },
+        "dark": {
+          "preset": "ночь"
+        }
+      }
+    },
+    "neon": {
+      "tool": "neonsign",
+      "name": "ns-bg-{app}-{theme}.webp",
+      "hub": {
+        "app": "нет"
+      },
+      "css": "styles/src/neon.css",
+      "base": {
+        "light": "#ffd6ea",
+        "dark": "#14061f"
+      },
+      "css_extra": [
+        "[data-app]::before { display: none; }"
+      ],
+      "themes": {
+        "light": {
+          "preset": "полдень"
+        },
+        "dark": {
+          "preset": "ночь"
+        }
+      }
+    },
+    "glass": {
+      "tool": "glass",
+      "name": "gs-bg-{app}-{theme}.webp",
+      "hub": {
+        "app": "нет"
+      },
+      "css": "styles/src/glass.css",
+      "base": {
+        "light": "#f2f3f6",
+        "dark": "#0a0c11"
+      },
+      "themes": {
+        "light": {
+          "preset": "светлая"
+        },
+        "dark": {
+          "preset": "тёмная"
+        }
+      }
+    },
+    "graphite": {
+      "tool": "graphite",
+      "name": "gr-bg-{app}-{theme}.webp",
+      "hub": {
+        "app": "нет"
+      },
+      "css": "styles/src/graphite.css",
+      "base": {
+        "light": "#f7f8fa",
+        "dark": "#08090c"
+      },
+      "css_extra": [
+        "body::before, body::after { display: none; }"
+      ],
+      "themes": {
+        "light": {
+          "preset": "светлая"
+        },
+        "dark": {
+          "preset": "тёмная"
+        }
+      }
+    },
+    "aquarelle": {
+      "tool": "watercolor",
+      "name": "de-bg-{app}-{theme}.webp",
+      "base": {
+        "light": "#e8e1d2",
+        "dark": "#141311"
+      },
+      "themes": {
+        "light": {
+          "preset": "светлый"
+        },
+        "dark": {
+          "preset": "тёмный"
+        }
+      }
+    },
+    "glare": {
+      "tool": "film",
+      "name": "gl-bg-{app}-{theme}.webp",
+      "base": {
+        "light": "#e9e3c6",
+        "dark": "#061214"
+      },
+      "themes": {
+        "light": {
+          "preset": "день"
+        },
+        "dark": {
+          "preset": "ночь"
+        }
+      }
+    }
+  },
+  "assets": {
+    "label": "КНИТУ",
+    "icon_look": "плоский",
+    "og": {
+      "tool": "graphite",
+      "preset": "тёмная",
+      "card_preset": "OG слева",
+      "set": {
+        "dims": 0.6,
+        "halo": 1.4
+      }
+    },
+    "pages": {
+      "hub": {
+        "title": "Расчётные утилиты · КНИТУ",
+        "subtitle": "Лабораторные и курсовые по вариантам: расчёт, отчёты Word, файлы для MATLAB и КОМПАС-3D"
+      },
+      "sapr-labs": {
+        "title": "Электропривод · ЛР 1–6",
+        "subtitle": "Расчёт по варианту, графики, отчёты Word и файлы для MATLAB"
+      },
+      "krrs-robot": {
+        "title": "Робот-балансир · LQR",
+        "subtitle": "Модель, пространство состояний, LQR-регулятор, отчёт Word и Simulink"
+      },
+      "op-coursework": {
+        "title": "Основы проектирования · КП",
+        "subtitle": "Расчёт привода, пояснительная записка Word и файлы для КОМПАС-3D"
+      },
+      "eco-pdv": {
+        "title": "Промышленная экология · ПДВ",
+        "subtitle": "Задачи 1.1–1.6: рассеивание, ПДВ, продукты сгорания, ущерб, отчёт Word"
+      }
+    }
+  }
+}

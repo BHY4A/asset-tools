@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Студия ассетов</title>
+<meta name="description" content="Фильтры для фото, генераторы фонов и текстур, цепочки, варианты и анимация — прямо в браузере, без установки.">
+<meta property="og:title" content="Студия ассетов">
+<meta property="og:description" content="Фильтры для фото, генераторы фонов и текстур, цепочки, варианты и анимация — в браузере.">
+<meta property="og:image" content="https://bhy4a.github.io/asset-tools/examples/og.jpg">
+<meta property="og:url" content="https://bhy4a.github.io/asset-tools/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="studio/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="studio/studio.css?v=1">
+<script>try{var t=localStorage.getItem('at-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body>
+<header class="bar">
+  <div class="brand">
+    <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5fa2"/><stop offset=".55" stop-color="#ffb347"/><stop offset="1" stop-color="#5fd0ff"/></linearGradient></defs><rect width="32" height="32" rx="8" fill="url(#lg)"/><path d="M7 22l6-12 4 8 3-5 5 9" fill="none" stroke="#fff" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/><circle cx="23" cy="9.5" r="2.4" fill="#fff"/></svg>
+    <div><b>Студия ассетов</b><small id="engine" class="engine" role="status">запуск…</small></div>
+  </div>
+  <div class="bar-mid">
+    <button class="btn ghost" id="undo" title="Отменить (Ctrl+Z)" aria-label="Отменить"><svg viewBox="0 0 20 20" width="18" height="18"><path d="M8 5L3 10l5 5M3.5 10H12a5 5 0 010 10h-1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" transform="translate(0 -2)"/></svg></button>
+    <button class="btn ghost" id="redo" title="Повторить (Ctrl+Shift+Z)" aria-label="Повторить"><svg viewBox="0 0 20 20" width="18" height="18"><path d="M12 5l5 5-5 5M16.5 10H8a5 5 0 000 10h1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" transform="translate(0 -2)"/></svg></button>
+  </div>
+  <div class="bar-act">
+    <button class="btn" id="photo-btn" title="Открыть фото (или перетащите / вставьте Ctrl+V)">Фото…</button>
+    <input type="file" id="photo-file" accept="image/*" hidden>
+    <div class="menu-wrap">
+      <button class="btn" id="more-btn" aria-haspopup="menu" aria-expanded="false">Ещё ▾</button>
+      <div class="menu" id="more-menu" role="menu" hidden>
+        <button role="menuitem" data-act="recipe-save">Сохранить рецепт (.json)</button>
+        <button role="menuitem" data-act="recipe-open">Открыть рецепт или .json…</button>
+        <button role="menuitem" data-act="batch">Пакет: много фото → zip…</button>
+        <button role="menuitem" data-act="anim">Анимация (GIF / WebP)…</button>
+        <button role="menuitem" data-act="clear-photo">Убрать фото</button>
+        <button role="menuitem" data-act="reset">Начать заново</button>
+      </div>
+    </div>
+    <input type="file" id="recipe-file" accept=".json,application/json" hidden>
+    <div class="save-grp">
+      <select id="fmt" aria-label="Формат файла"><option value="png">PNG</option><option value="jpg">JPG</option><option value="webp">WebP</option></select>
+      <button class="btn pri" id="save" title="Полный размер (Ctrl+S)">Сохранить</button>
+    </div>
+    <button class="btn ghost" id="theme" aria-label="Светлая или тёмная тема" title="Тема"><svg viewBox="0 0 20 20" width="18" height="18"><path d="M10 2.5a7.5 7.5 0 100 15z" fill="currentColor"/><circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button>
+  </div>
+</header>
+
+<main class="work">
+  <aside class="side" aria-label="Цепочка и параметры">
+    <section class="chain">
+      <div class="sec-h"><h2>Цепочка</h2><button class="btn sm" id="add-step" aria-haspopup="dialog">+ шаг</button></div>
+      <ol id="steps" class="steps"></ol>
+      <p class="hint" id="chain-hint"></p>
+    </section>
+    <section class="params" id="params" aria-live="polite"></section>
+  </aside>
+
+  <section class="stage" aria-label="Предпросмотр">
+    <div class="stage-bar">
+      <div class="seg" role="radiogroup" aria-label="Вид">
+        <button role="radio" data-view="frame" aria-checked="true">Кадр</button>
+        <button role="radio" data-view="compare" aria-checked="false" title="Сравнить с исходником или с предыдущим шагом">До / после</button>
+        <button role="radio" data-view="grid" aria-checked="false" title="9 вариантов вокруг текущего (V)">Варианты</button>
+        <button role="radio" data-view="tile" aria-checked="false" id="view-tile" hidden>Плитка 3×3</button>
+      </div>
+      <div class="seg" role="radiogroup" aria-label="Макет утилиты поверх" title="Как фон будет выглядеть под интерфейсом">
+        <button role="radio" data-mock="none" aria-checked="true">Без макета</button>
+        <button role="radio" data-mock="light" aria-checked="false">Макет ☀</button>
+        <button role="radio" data-mock="dark" aria-checked="false">Макет ☾</button>
+      </div>
+      <span class="info" id="info"></span>
+    </div>
+    <div class="canvas" id="canvas">
+      <div class="frame" id="frame">
+        <img id="out" alt="Результат">
+        <div class="cmp" id="cmp" hidden><img id="before" alt="До"><div class="cmp-line" id="cmp-line"><span>до</span><span>после</span></div></div>
+        <div class="mock" id="mock" hidden aria-hidden="true">
+          <div class="m-top"><i></i><b></b><span></span><span></span><span></span></div>
+          <div class="m-body"><div class="m-rail"><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="m-sheet"><div class="m-eye"></div><div class="m-h1"></div><div class="m-p"></div><div class="m-p s"></div><div class="m-fields"><i></i><i></i><i></i><i></i></div><div class="m-p"></div><div class="m-p s"></div></div></div>
+        </div>
+      </div>
+      <div class="grid" id="grid" hidden></div>
+      <div class="tile" id="tile" hidden></div>
+      <div class="drop" id="drop" hidden><div><b>Перетащите фото сюда</b><span>или нажмите «Фото…», или вставьте из буфера (Ctrl+V)</span></div></div>
+      <div class="busy" id="busy" hidden><i></i></div>
+      <div class="boot" id="boot"><div class="boot-card"><b>Запускаю студию</b><span id="boot-text">Python в браузере, один раз ~30 МБ — дальше из кэша</span><div class="prog"><i id="boot-bar"></i></div></div></div>
+    </div>
+    <div class="hist" aria-label="История"><div class="hist-h">История</div><div id="hist" class="hist-row"></div></div>
+  </section>
+</main>
+
+<dialog id="add-dlg" class="dlg wide" aria-labelledby="add-h">
+  <form method="dialog"><div class="dlg-h"><h2 id="add-h">Добавить шаг</h2><button class="btn ghost" value="cancel" aria-label="Закрыть">✕</button></div>
+  <div class="pick"><div><h3>Генераторы <small>рисуют с нуля</small></h3><div id="pick-gen"></div></div><div><h3>Фильтры <small>меняют картинку</small></h3><div id="pick-flt"></div></div></div></form>
+</dialog>
+
+<dialog id="anim-dlg" class="dlg" aria-labelledby="anim-h">
+  <form method="dialog"><div class="dlg-h"><h2 id="anim-h">Анимация</h2><button class="btn ghost" value="cancel" aria-label="Закрыть">✕</button></div>
+  <div class="form">
+    <label>Что двигать <select id="anim-mode"></select></label>
+    <p class="hint" id="anim-mode-hint"></p>
+    <div class="row2"><label>Кадров <input type="number" id="anim-n" value="24" min="4" max="96"></label><label>Кадров в секунду <input type="number" id="anim-fps" value="12" min="2" max="30"></label></div>
+    <div class="row2"><label>Размер, px <input type="number" id="anim-size" value="480" min="160" max="1600" step="40"></label><label>Формат <select id="anim-fmt"><option value="webp">WebP (меньше, точнее цвет)</option><option value="gif">GIF</option></select></label></div>
+    <label id="anim-amt-l">Сила перехода <input type="range" id="anim-amt" min=".1" max="1" step=".05" value=".5"></label>
+    <div class="anim-out"><img id="anim-img" alt="Анимация" hidden><div class="prog" id="anim-prog" hidden><i></i></div></div>
+  </div>
+  <div class="dlg-f"><button class="btn pri" type="button" id="anim-go">Сделать</button><a class="btn" id="anim-dl" hidden download>Скачать</a></div></form>
+</dialog>
+
+<dialog id="batch-dlg" class="dlg" aria-labelledby="batch-h">
+  <form method="dialog"><div class="dlg-h"><h2 id="batch-h">Пакетная обработка</h2><button class="btn ghost" value="cancel" aria-label="Закрыть">✕</button></div>
+  <div class="form"><p class="hint">Текущая цепочка применится к каждому фото в полном размере. Результат — zip с картинками и рецептом.</p>
+    <label class="filebox"><input type="file" id="batch-files" accept="image/*" multiple><span id="batch-count">Выберите фото…</span></label>
+    <label>Формат <select id="batch-fmt"><option value="png">PNG</option><option value="jpg">JPG</option><option value="webp">WebP</option></select></label>
+    <div class="prog" id="batch-prog" hidden><i></i></div></div>
+  <div class="dlg-f"><button class="btn pri" type="button" id="batch-go" disabled>Обработать</button><a class="btn" id="batch-dl" hidden download="assets.zip">Скачать zip</a></div></form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<script src="studio/app.js?v=1"></script>
+</body>
+</html>
